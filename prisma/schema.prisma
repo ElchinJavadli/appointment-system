@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")  
+}
+
+// hər istifadəçi (client, provider, admin) bu cədvəldə saxlanılır
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("client") // client, provider, admin
+  phone     String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  providerProfile Provider?
+  appointments    Appointment[]
+  favorites       Favorite[]
+}
+
+// yalnız role="provider" olan userlərin bir Provider qeydi olur
+model Provider {
+  id           Int           @id @default(autoincrement())
+  userId       Int           @unique
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio          String?
+  category     String
+  address      String?
+  website      String?
+  latitude     Float?
+  longitude    Float?
+  services     Service[]
+  workingHours WorkingHour[]
+  appointments Appointment[]
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  name         String
+  price        Float
+  duration     Int // dəqiqə ilə
+  providerId   Int
+  provider     Provider      @relation(fields: [providerId], references: [id])
+  images       ServiceImage[]
+  appointments Appointment[]
+  favoritedBy  Favorite[]
+}
+
+model WorkingHour {
+  id         Int      @id @default(autoincrement())
+  providerId Int
+  provider   Provider @relation(fields: [providerId], references: [id])
+  dayOfWeek  Int // 0 = Bazar, 1 = Bazar ertesi ... 6 = Şənbə
+  startTime  String // "09:00"
+  endTime    String // "18:00"
+  isDayOff   Boolean  @default(false)
+  breakStart String?  // "13:00" — optional, null olduqda nahar fasiləsi yoxdur
+  breakEnd   String?  // "14:00"
+
+  @@unique([providerId, dayOfWeek])
+}
+
+model Appointment {
+  id         Int      @id @default(autoincrement())
+  clientId   Int
+  client     User     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  providerId Int
+  provider   Provider @relation(fields: [providerId], references: [id])
+  serviceId  Int
+  service    Service  @relation(fields: [serviceId], references: [id])
+  date       DateTime
+  startTime  String
+  endTime    String
+  status     String   @default("pending") // pending, confirmed, cancelled, completed
+  createdAt  DateTime @default(now())
+}
+
+
+
+model ServiceImage {
+  id        Int      @id @default(autoincrement())
+  serviceId Int
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  url       String
+  createdAt DateTime @default(now())
+}
+
+// müştərinin seçdiyi ("sevimli") xidmətlər
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  client    User     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  serviceId Int
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([clientId, serviceId])
+}
