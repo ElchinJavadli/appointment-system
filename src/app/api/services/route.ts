@@ -20,7 +20,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, price, duration, providerId } = body;
+  const { name, price, duration, providerId, description } = body;
 
   if (!name || !price || !duration || !providerId) {
     return NextResponse.json({ message: "Missing fields" }, { status: 400 });
@@ -32,6 +32,7 @@ export async function POST(req: Request) {
       price: Number(price),
       duration: Number(duration),
       providerId: Number(providerId),
+      description: description || null,
     },
   });
 

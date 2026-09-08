@@ -4,13 +4,14 @@ import Navbar from "@/components/Navbar";
 import { STATUS } from "@/lib/statusColors";
 
 const days = [
-  "Sunday",
+  
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
+  "Sunday"
 ];
 
 const defaultDay = () => ({
@@ -100,7 +101,7 @@ export default function ProviderSchedule() {
           </div>
           <button
             onClick={handleSave}
-            className="bg-[#1C1F26] dark:bg-[#C2540A] text-white px-5 py-2.5 rounded-xl hover:bg-[#C2540A] dark:hover:bg-[#a3450a] transition-colors font-medium text-sm shrink-0"
+            className="bg-[#1C1F26] dark:bg-[#72b0ab] text-white px-5 py-2.5 rounded-xl hover:bg-[#72b0ab] dark:hover:bg-[#5a8d8a] transition-colors font-medium text-sm shrink-0"
           >
             Save Schedule
           </button>
@@ -133,7 +134,7 @@ export default function ProviderSchedule() {
                       type="checkbox"
                       checked={d.isDayOff}
                       onChange={(e) => updateDay(index, "isDayOff", e.target.checked)}
-                      className="w-4 h-4 rounded accent-[#C2540A]"
+                      className="w-4 h-4 rounded accent-[#72b0ab]"
                     />
                     Day off
                   </label>

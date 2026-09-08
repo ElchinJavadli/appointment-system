@@ -216,6 +216,11 @@ export default function BookPage() {
               <p className="text-sm text-[#12665C] dark:text-[#7FB5A8] font-['IBM_Plex_Mono',monospace] mt-0.5">
                 ${activeService.price}
               </p>
+              {activeService.description && (
+                <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] mt-2 leading-relaxed">
+                  {activeService.description}
+                </p>
+              )}
             </div>
           </div>
         )}

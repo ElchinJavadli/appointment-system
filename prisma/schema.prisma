@@ -7,13 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")  
 }
 
-// hər istifadəçi (client, provider, admin) bu cədvəldə saxlanılır
+
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String
-  role      String   @default("client") // client, provider, admin
+  role      String   @default("client") 
   phone     String?
   avatarUrl String?
   createdAt DateTime @default(now())
@@ -23,7 +24,6 @@ model User {
   favorites       Favorite[]
 }
 
-// yalnız role="provider" olan userlərin bir Provider qeydi olur
 model Provider {
   id           Int           @id @default(autoincrement())
   userId       Int           @unique
@@ -43,7 +43,8 @@ model Service {
   id           Int           @id @default(autoincrement())
   name         String
   price        Float
-  duration     Int // dəqiqə ilə
+  duration     Int 
+  description  String?
   providerId   Int
   provider     Provider      @relation(fields: [providerId], references: [id])
   images       ServiceImage[]
@@ -55,12 +56,12 @@ model WorkingHour {
   id         Int      @id @default(autoincrement())
   providerId Int
   provider   Provider @relation(fields: [providerId], references: [id])
-  dayOfWeek  Int // 0 = Bazar, 1 = Bazar ertesi ... 6 = Şənbə
-  startTime  String // "09:00"
-  endTime    String // "18:00"
+  dayOfWeek  Int 
+  startTime  String 
+  endTime    String 
   isDayOff   Boolean  @default(false)
-  breakStart String?  // "13:00" — optional, null olduqda nahar fasiləsi yoxdur
-  breakEnd   String?  // "14:00"
+  breakStart String?  
+  breakEnd   String?  
 
   @@unique([providerId, dayOfWeek])
 }
@@ -76,7 +77,7 @@ model Appointment {
   date       DateTime
   startTime  String
   endTime    String
-  status     String   @default("pending") // pending, confirmed, cancelled, completed
+  status     String   @default("pending") 
   createdAt  DateTime @default(now())
 }
 
@@ -90,7 +91,7 @@ model ServiceImage {
   createdAt DateTime @default(now())
 }
 
-// müştərinin seçdiyi ("sevimli") xidmətlər
+
 model Favorite {
   id        Int      @id @default(autoincrement())
   clientId  Int

@@ -121,7 +121,7 @@ export default function ProviderProfilePage() {
                   className="w-16 h-16 rounded-full object-cover"
                 />
               ) : (
-                <span className="w-16 h-16 rounded-full bg-[#C2540A] text-white flex items-center justify-center text-2xl font-bold font-['Space_Grotesk',sans-serif]">
+                <span className="w-16 h-16 rounded-full bg-[#72b0ab] text-white flex items-center justify-center text-2xl font-bold font-['Space_Grotesk',sans-serif]">
                   {name?.[0]?.toUpperCase() || "?"}
                 </span>
               )}
@@ -139,7 +139,7 @@ export default function ProviderProfilePage() {
               {name || "Your name"}
             </p>
             {category && (
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#C2540A] mb-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#72b0ab] mb-3">
                 {category}
               </p>
             )}
@@ -152,7 +152,7 @@ export default function ProviderProfilePage() {
                   href={website.startsWith("http") ? website : `https://${website}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-[#C2540A] hover:underline truncate"
+                  className="block text-[#72b0ab] hover:underline truncate"
                 >
                   {website}
                 </a>
@@ -259,7 +259,7 @@ export default function ProviderProfilePage() {
             <div className="flex items-center gap-3">
               <button
                 type="submit"
-                className="bg-[#1C1F26] dark:bg-[#C2540A] text-white rounded-xl px-6 py-2.5 hover:bg-[#C2540A] dark:hover:bg-[#a3450a] transition-colors font-medium"
+                className="bg-[#1C1F26] dark:bg-[#72b0ab] text-white rounded-xl px-6 py-2.5 hover:bg-[#72b0ab] dark:hover:bg-[#5a8d8a] transition-colors font-medium"
               >
                 Save Changes
               </button>

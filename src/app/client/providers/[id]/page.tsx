@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { Phone, MapPin } from "lucide-react";
 
-const PALETTE = ["#1f5c55", "#12665C", "#8A6D00", "#2F5D8A", "#4A7A5D", "#8A3B4A"];
+const PALETTE = ["#1f5c55", "#12665C", "#72b0ab", "#2F5D8A", "#4A7A5D", "#8A3B4A"];
 function colorFor(text: string) {
   if (!text) return "#6B6A62";
   let hash = 0;
@@ -138,13 +138,18 @@ export default function ProviderProfilePage() {
                       </div>
                     )}
 
-                    <div className="p-3">
+                     <div className="p-3">
                       <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
                         {s.name}
                       </p>
-                      <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] mb-3 font-['IBM_Plex_Mono',monospace]">
+                      <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] font-['IBM_Plex_Mono',monospace]">
                         ${s.price} • {s.duration} min
                       </p>
+                      {s.description && (
+                        <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mt-2 mb-3 leading-relaxed">
+                          {s.description}
+                        </p>
+                      )}
                       <Link
                         href={`/client/book?providerId=${id}&serviceId=${s.id}`}
                         className="block text-center text-white py-2 rounded-xl text-sm font-medium transition-opacity hover:opacity-90"
