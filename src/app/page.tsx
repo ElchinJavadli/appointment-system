@@ -170,7 +170,7 @@ export default function App() {
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-6 pb-20">
+      <main className="max-w-[1600px] mx-auto px-6 pb-20">
         <div className="flex items-center justify-between mb-5">
           <p className="text-[#6B6A62] text-sm">
             <span className="font-semibold text-[#1C1F26] font-['IBM_Plex_Mono',monospace]">{filtered.length}</span> services available
@@ -208,7 +208,7 @@ export default function App() {
                   <img
                     src={s.images[0].url}
                     alt={s.name}
-                    className="w-full h-44 object-cover"
+                    className="w-full h-60 object-cover"
                   />
                 ) : (
                   <div className="w-full h-44 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>

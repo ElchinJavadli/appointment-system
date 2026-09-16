@@ -188,7 +188,7 @@ export default function ClientDashboard() {
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-6 pb-20">
+      <main className="max-w-[1600px] mx-auto px-6 pb-20">
         <div className="flex items-center justify-between mb-5">
           <p className="text-[#6B6A62] dark:text-[#9B9A92] text-sm">
             <span className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['IBM_Plex_Mono',monospace]">{filtered.length}</span> services available
@@ -209,7 +209,7 @@ export default function ClientDashboard() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1x sm:grid-cols-2 lg:grid-cols-4 gap-5"> 
           {filtered.map((s) => {
             const cat = s.provider?.category || "";
             const color = CATEGORY_COLORS[cat] || "#6B6A62";
@@ -242,7 +242,7 @@ export default function ClientDashboard() {
                     className="w-full h-44 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-44 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>
+                  <div className="w-full h-50 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>
                     <CategoryIcon category={cat} className="w-10 h-10" style={{ color }} />
                   </div>
                 )}
