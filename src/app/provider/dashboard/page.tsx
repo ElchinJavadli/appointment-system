@@ -55,7 +55,7 @@ export default function ProviderDashboard() {
         <div className="flex flex-col gap-4">
           {appointments.map((a) => (
             <AppointmentCard key={a.id} appointment={a}>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {a.status === "pending" && (
                   <button
                     onClick={() => changeStatus(a.id, "confirmed")}

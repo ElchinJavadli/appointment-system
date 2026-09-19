@@ -77,7 +77,7 @@ export default function ProviderServices() {
     setEditingId(null);
   };
 
-    const saveEditing = async (id: number) => {
+  const saveEditing = async (id: number) => {
     setMessage("");
 
     const res = await fetch(`/api/services/${id}`, {
@@ -103,7 +103,7 @@ export default function ProviderServices() {
     loadServices(providerId);
   };
 
-    const handleDeleteService = async (id: number) => {
+  const handleDeleteService = async (id: number) => {
     const confirmed = confirm("Are you sure you want to delete this service?");
     if (!confirmed) return;
 
@@ -154,7 +154,7 @@ export default function ProviderServices() {
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B]">
       <Navbar role="provider" />
 
-      <div className="p-6 sm:p-8 max-w-5xl mx-auto">
+      <div className="px-4 py-6 sm:p-8 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
@@ -177,7 +177,7 @@ export default function ProviderServices() {
 
         <form
           onSubmit={handleAddService}
-          className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-5 mb-6"
+          className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-5 mb-6"
         >
           <h2 className="text-xs font-semibold uppercase tracking-wide text-[#6B6A62] dark:text-[#9B9A92] mb-3">
             Add a new service
@@ -238,7 +238,7 @@ export default function ProviderServices() {
         </form>
 
         {services.length === 0 ? (
-          <div className="border border-dashed border-[#1C1F26]/20 dark:border-white/15 rounded-2xl p-10 text-center">
+          <div className="border border-dashed border-[#1C1F26]/20 dark:border-white/15 rounded-2xl p-6 sm:p-10 text-center">
             <p className="text-[#6B6A62] dark:text-[#9B9A92] text-sm">
               You haven't added any services yet — use the form above to add your first one.
             </p>
@@ -251,11 +251,12 @@ export default function ProviderServices() {
               return (
                 <div
                   key={s.id}
-                  className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-5"
+                  className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-5 min-w-0"
                 >
                   {!isEditing ? (
                     <>
-                      <div className="flex items-start justify-between gap-4">
+
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div className="flex items-start gap-3 min-w-0">
                           {s.images && s.images.length > 0 ? (
                             <img src={s.images[0].url} alt={s.name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
@@ -264,14 +265,14 @@ export default function ProviderServices() {
                           )}
 
                           <div className="min-w-0">
-                            <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
+                            <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] break-words">
                               {s.name}
                             </p>
                             <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] font-['IBM_Plex_Mono',monospace] mt-0.5">
                               ${s.price} · {s.duration} min
                             </p>
                             {s.description ? (
-                              <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mt-2 leading-relaxed">
+                              <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mt-2 leading-relaxed break-words">
                                 {s.description}
                               </p>
                             ) : (
@@ -282,7 +283,7 @@ export default function ProviderServices() {
                           </div>
                         </div>
 
-                        <div className="flex gap-2 shrink-0">
+                        <div className="flex gap-2 sm:shrink-0">
                           <button
                             onClick={() => startEditing(s)}
                             className="text-xs font-medium px-3 py-1.5 rounded-lg bg-[#C2540A]/10 text-[#72b0ab] hover:bg-[#C2540A]/20 transition-colors"
@@ -311,8 +312,9 @@ export default function ProviderServices() {
                               />
                               <button
                                 onClick={() => handleImageDelete(img.id)}
-                                className="absolute -top-1.5 -right-1.5 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center"
+                                className="absolute -top-2 -right-2 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
                                 style={{ backgroundColor: STATUS.cancelled.color }}
+                                aria-label="Delete photo"
                               >
                                 ×
                               </button>

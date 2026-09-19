@@ -98,11 +98,11 @@ export default function ClientDashboard() {
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B] font-[Inter,sans-serif] text-[#1C1F26] dark:text-[#FAFAF8]">
       <Navbar role="client" />
 
-      <section className="pt-16 pb-16 px-6 text-center relative overflow-hidden">
+      <section className="pt-12 sm:pt-16 pb-12 sm:pb-16 px-4 sm:px-6 text-center relative overflow-hidden">
         <div
-          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15] pointer-events-none"
+          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15] pointer-events-none text-[#1C1F26] dark:text-white"
           style={{
-            backgroundImage: "radial-gradient(#1C1F26 0.6px, transparent 0.6px)",
+            backgroundImage: "radial-gradient(currentColor 0.6px, transparent 0.6px)",
             backgroundSize: "22px 22px",
             maskImage: "radial-gradient(ellipse 60% 50% at 50% 20%, black, transparent)",
           }}
@@ -112,41 +112,41 @@ export default function ClientDashboard() {
           <span className="inline-flex items-center gap-1.5 text-[#12665C] dark:text-[#7FB5A8] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border border-[#12665C]/30 mb-5">
             Online Booking
           </span>
-          <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-4 font-['Space_Grotesk',sans-serif] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4 font-['Space_Grotesk',sans-serif] tracking-tight break-words">
             Welcome back<span className="text-[#72b0ab]">{user?.name ? `, ${user.name}` : ""}</span>
           </h1>
-          <p className="text-[#6B6A62] dark:text-[#9B9A92] text-lg mb-10 leading-relaxed">
+          <p className="text-[#6B6A62] dark:text-[#9B9A92] text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed">
             Pick a service below and book your next appointment.
           </p>
 
           <div className="bg-white dark:bg-[#20242C] rounded-2xl shadow-sm p-2 flex gap-2 max-w-xl mx-auto border border-[#1C1F26]/10 dark:border-white/10">
-            <div className="flex-1 flex items-center gap-3 px-4">
+            <div className="flex-1 min-w-0 flex items-center gap-3 px-3 sm:px-4 py-1">
               <Search className="w-4 h-4 text-[#6B6A62] dark:text-[#9B9A92] shrink-0" strokeWidth={2} />
               <input
                 type="text"
                 placeholder="Search services or providers..."
                 value={search}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-                className="flex-1 text-sm bg-transparent outline-none placeholder-[#6B6A62]/70 dark:placeholder-[#9B9A92]/70"
+                className="flex-1 min-w-0 text-sm bg-transparent outline-none placeholder-[#6B6A62]/70 dark:placeholder-[#9B9A92]/70"
               />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 mb-8">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 mb-8">
         <div className="bg-white dark:bg-[#20242C] rounded-2xl border border-[#1C1F26]/10 dark:border-white/10 p-4 flex flex-wrap gap-3 items-center">
           <div className="flex items-center gap-2 text-[#6B6A62] dark:text-[#9B9A92]">
             <Filter className="w-4 h-4" strokeWidth={2} />
             <span className="text-xs font-semibold uppercase tracking-wider">Filter</span>
           </div>
 
-          <div className="w-px h-5 bg-[#1C1F26]/10 dark:bg-white/10" />
+          <div className="hidden sm:block w-px h-5 bg-[#1C1F26]/10 dark:bg-white/10" />
 
           <select
             value={category}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
-            className="text-sm bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 outline-none cursor-pointer hover:border-[#72b0ab]/50 focus:border-[#72b0ab] transition-colors"
+            className="w-full sm:w-auto text-sm bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 outline-none cursor-pointer hover:border-[#72b0ab]/50 focus:border-[#72b0ab] transition-colors"
           >
             <option value="">All categories</option>
             {categories.map((c) => (
@@ -154,25 +154,25 @@ export default function ClientDashboard() {
             ))}
           </select>
 
-          <div className="flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 focus-within:border-[#72b0ab] transition-colors">
+          <div className="flex-1 sm:flex-none flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 focus-within:border-[#72b0ab] transition-colors">
             <span className="text-[#6B6A62] dark:text-[#9B9A92] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
             <input
               type="number"
               placeholder="Min"
               value={minPrice}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setMinPrice(e.target.value)}
-              className="w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
+              className="w-full min-w-0 sm:w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 focus-within:border-[#72b0ab] transition-colors">
+          <div className="flex-1 sm:flex-none flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 focus-within:border-[#72b0ab] transition-colors">
             <span className="text-[#6B6A62] dark:text-[#9B9A92] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
             <input
               type="number"
               placeholder="Max"
               value={maxPrice}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxPrice(e.target.value)}
-              className="w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
+              className="w-full min-w-0 sm:w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function ClientDashboard() {
         </div>
       </section>
 
-      <main className="max-w-[1600px] mx-auto px-6 pb-20">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-20">
         <div className="flex items-center justify-between mb-5">
           <p className="text-[#6B6A62] dark:text-[#9B9A92] text-sm">
             <span className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['IBM_Plex_Mono',monospace]">{filtered.length}</span> services available
@@ -209,7 +209,7 @@ export default function ClientDashboard() {
           </div>
         )}
 
-        <div className="grid grid-cols-1x sm:grid-cols-2 lg:grid-cols-4 gap-5"> 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {filtered.map((s) => {
             const cat = s.provider?.category || "";
             const color = CATEGORY_COLORS[cat] || "#6B6A62";
@@ -220,7 +220,7 @@ export default function ClientDashboard() {
               <Link
                 key={s.id}
                 href={`/client/book?providerId=${s.providerId}&serviceId=${s.id}`}
-                className="group relative bg-white dark:bg-[#20242C] rounded-2xl border border-[#1C1F26]/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+                className="group relative bg-white dark:bg-[#20242C] rounded-2xl border border-[#1C1F26]/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-shadow flex flex-col min-w-0"
               >
                 <button
                   onClick={(e: MouseEvent) => toggleFavorite(e, s.id)}
@@ -242,12 +242,12 @@ export default function ClientDashboard() {
                     className="w-full h-44 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-50 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>
+                  <div className="w-full h-44 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>
                     <CategoryIcon category={cat} className="w-10 h-10" style={{ color }} />
                   </div>
                 )}
 
-                <div className="p-5 flex flex-col flex-1">
+                <div className="p-5 flex flex-col flex-1 min-w-0">
                   <span
                     className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit"
                     style={{ color, backgroundColor: `${color}14` }}
@@ -256,11 +256,11 @@ export default function ClientDashboard() {
                     {cat}
                   </span>
 
-                  <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] text-base mb-1 group-hover:text-[#72b0ab] transition-colors leading-snug font-['Space_Grotesk',sans-serif]">
+                  <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] text-base mb-1 group-hover:text-[#72b0ab] transition-colors leading-snug font-['Space_Grotesk',sans-serif] break-words">
                     {s.name}
                   </p>
 
-                  <div className="flex items-center gap-3 text-sm text-[#6B6A62] dark:text-[#9B9A92] mb-4 font-['IBM_Plex_Mono',monospace]">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[#6B6A62] dark:text-[#9B9A92] mb-4 font-['IBM_Plex_Mono',monospace]">
                     <span className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" strokeWidth={2} />
                       {s.duration} min
@@ -269,11 +269,11 @@ export default function ClientDashboard() {
                     <span className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8]">${s.price}</span>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between">
+                  <div className="mt-auto flex items-center justify-between gap-3">
                     <Link
                       href={`/client/providers/${s.providerId}`}
                       onClick={(e: MouseEvent) => e.stopPropagation()}
-                      className="flex items-center gap-2 text-sm text-[#6B6A62] dark:text-[#9B9A92] hover:text-[#72b0ab] transition-colors"
+                      className="flex items-center gap-2 min-w-0 text-sm text-[#6B6A62] dark:text-[#9B9A92] hover:text-[#72b0ab] transition-colors"
                     >
                       <div
                         className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
@@ -281,10 +281,10 @@ export default function ClientDashboard() {
                       >
                         {initials}
                       </div>
-                      <span>{s.provider?.user?.name || "Unknown"}</span>
+                      <span className="truncate">{s.provider?.user?.name || "Unknown"}</span>
                     </Link>
 
-                    <span className="text-xs font-semibold text-[#72b0ab] bg-[#72b0ab]/10 group-hover:bg-[#72b0ab] group-hover:text-white px-3 py-1.5 rounded-xl transition-colors">
+                    <span className="shrink-0 text-xs font-semibold text-[#72b0ab] bg-[#72b0ab]/10 group-hover:bg-[#72b0ab] group-hover:text-white px-3 py-1.5 rounded-xl transition-colors">
                       Book now
                     </span>
                   </div>

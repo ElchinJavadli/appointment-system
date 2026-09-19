@@ -123,7 +123,7 @@ export default function BookPage() {
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B]">
       <Navbar role="client" />
 
-      <div className="p-6 sm:p-8 max-w-xl mx-auto">
+      <div className="px-4 py-6 sm:p-8 max-w-xl mx-auto">
         <p className="text-[11px] tracking-[0.25em] uppercase text-[#12665C] dark:text-[#7FB5A8] font-['IBM_Plex_Mono',monospace] mb-1">
           Reservation
         </p>
@@ -151,17 +151,23 @@ export default function BookPage() {
             >
               {provider.user?.name?.[0]?.toUpperCase() || "?"}
             </span>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] truncate group-hover:text-[#72b0ab] transition-colors">
                 {provider.user?.name}
               </p>
-              <div className="flex items-center gap-3 text-xs text-[#6B6A62] dark:text-[#9B9A92]">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#6B6A62] dark:text-[#9B9A92]">
                 <span>{provider.category}</span>
                 {provider.user?.phone && (
-                  <span className="flex items-center gap-1"><Phone className="w-3 h-3" strokeWidth={1.75} />{provider.user.phone}</span>
+                  <span className="flex items-center gap-1 min-w-0">
+                    <Phone className="w-3 h-3 shrink-0" strokeWidth={1.75} />
+                    {provider.user.phone}
+                  </span>
                 )}
                 {provider.address && (
-                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={1.75} />{provider.address}</span>
+                  <span className="flex items-center gap-1 min-w-0">
+                    <MapPin className="w-3 h-3 shrink-0" strokeWidth={1.75} />
+                    <span className="break-words">{provider.address}</span>
+                  </span>
                 )}
               </div>
             </div>
@@ -210,14 +216,14 @@ export default function BookPage() {
               </div>
             </div>
             <div className="p-4">
-              <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
+              <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] break-words">
                 {activeService.name}
               </p>
               <p className="text-sm text-[#12665C] dark:text-[#7FB5A8] font-['IBM_Plex_Mono',monospace] mt-0.5">
                 ${activeService.price}
               </p>
               {activeService.description && (
-                <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] mt-2 leading-relaxed">
+                <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] mt-2 leading-relaxed break-words">
                   {activeService.description}
                 </p>
               )}
@@ -257,7 +263,7 @@ export default function BookPage() {
             type="date"
             value={date}
             onChange={(e: ChangeEvent<HTMLInputElement>) => { setDate(e.target.value); setSelectedSlot(null); }}
-            className="w-full bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-3 py-2 mb-4 text-[#1C1F26] dark:text-[#FAFAF8] outline-none focus:border-[#72b0ab]/60 transition-colors"
+            className="block w-full min-w-0 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-3 py-2 mb-4 text-[#1C1F26] dark:text-[#FAFAF8] outline-none focus:border-[#72b0ab]/60 transition-colors"
           />
         )}
 
@@ -296,7 +302,7 @@ export default function BookPage() {
         )}
 
         {activeService && (
-          <div className="rounded-2xl bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 overflow-hidden">
+          <div className="rounded-2xl bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 overflow-hidden mb-6">
             <div className="p-4 flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] truncate">

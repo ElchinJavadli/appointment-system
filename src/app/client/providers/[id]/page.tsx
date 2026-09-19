@@ -76,20 +76,21 @@ export default function ProviderProfilePage() {
         />
       </div>
 
-      <div className="max-w-3xl mx-auto px-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
 
-        <div className="relative z-10 -mt-10 sm:-mt-12 flex items-end gap-4 pb-6">
+
+        <div className="relative z-10 -mt-10 sm:-mt-12 flex items-start gap-4 pb-6">
           <span
             className="w-20 h-20 sm:w-24 sm:h-24 rounded-tl-2xl rounded-br-2xl flex items-center justify-center text-3xl font-semibold text-white shrink-0 ring-4 ring-[#FAFAF8] dark:ring-[#14161B] shadow-md"
             style={{ backgroundColor: accent }}
           >
             {provider.user?.name?.[0]?.toUpperCase() || "?"}
           </span>
-          <div className="pb-1 min-w-0">
+          <div className="pt-12 sm:pt-14 min-w-0 flex-1">
             <h1 className="text-xl sm:text-2xl font-bold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] truncate">
               {provider.user?.name}
             </h1>
-            <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92]">
+            <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] break-words">
               <span className="font-medium" style={{ color: accent }}>{provider.category}</span>
               {provider.address && <> · {provider.address}</>}
             </p>
@@ -121,7 +122,7 @@ export default function ProviderProfilePage() {
                 {services.map((s) => (
                   <div
                     key={s.id}
-                    className="border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl overflow-hidden bg-white dark:bg-[#20242C]"
+                    className="border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl overflow-hidden bg-white dark:bg-[#20242C] min-w-0"
                   >
                     {s.images && s.images.length > 0 ? (
                       <img
@@ -131,22 +132,22 @@ export default function ProviderProfilePage() {
                       />
                     ) : (
                       <div
-                        className="w-full h-40 flex items-center justify-center text-sm"
+                        className="w-full h-40 flex items-center justify-center text-sm px-3 text-center break-words"
                         style={{ backgroundColor: `${accent}14`, color: accent }}
                       >
                         {s.name}
                       </div>
                     )}
 
-                     <div className="p-3">
-                      <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
+                    <div className="p-3">
+                      <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] break-words">
                         {s.name}
                       </p>
                       <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] font-['IBM_Plex_Mono',monospace]">
                         ${s.price} • {s.duration} min
                       </p>
                       {s.description && (
-                        <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mt-2 mb-3 leading-relaxed">
+                        <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mt-2 mb-3 leading-relaxed break-words">
                           {s.description}
                         </p>
                       )}
@@ -171,10 +172,10 @@ export default function ProviderProfilePage() {
               <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div
-                    className="rounded-2xl p-4"
+                    className="rounded-2xl p-4 min-w-0"
                     style={{ backgroundColor: `${accent}0F` }}
                   >
-                    <p className="text-2xl font-bold font-['IBM_Plex_Mono',monospace]" style={{ color: accent }}>
+                    <p className="text-xl sm:text-2xl font-bold font-['IBM_Plex_Mono',monospace] break-words" style={{ color: accent }}>
                       {services.length}
                     </p>
                     <p className="text-xs text-[#6B6A62] dark:text-[#9B9A92] mt-0.5">
@@ -182,10 +183,10 @@ export default function ProviderProfilePage() {
                     </p>
                   </div>
                   <div
-                    className="rounded-2xl p-4"
+                    className="rounded-2xl p-4 min-w-0"
                     style={{ backgroundColor: `${accent}0F` }}
                   >
-                    <p className="text-2xl font-bold font-['IBM_Plex_Mono',monospace]" style={{ color: accent }}>
+                    <p className="text-xl sm:text-2xl font-bold font-['IBM_Plex_Mono',monospace] break-words" style={{ color: accent }}>
                       {priceRange}
                     </p>
                     <p className="text-xs text-[#6B6A62] dark:text-[#9B9A92] mt-0.5">
@@ -194,12 +195,12 @@ export default function ProviderProfilePage() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-6">
+                <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-6">
                   <p className="text-xs font-semibold uppercase tracking-wider text-[#6B6A62] dark:text-[#9B9A92] mb-2">
                     About
                   </p>
                   {provider.bio ? (
-                    <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mb-5 leading-relaxed">
+                    <p className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] mb-5 leading-relaxed break-words">
                       {provider.bio}
                     </p>
                   ) : (
@@ -213,15 +214,15 @@ export default function ProviderProfilePage() {
                   </p>
                   <div className="text-sm text-[#1C1F26] dark:text-[#FAFAF8] space-y-2">
                     {provider.user?.phone && (
-                      <p className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-[#6B6A62] dark:text-[#9B9A92]" strokeWidth={1.75} />
-                        {provider.user.phone}
+                      <p className="flex items-start gap-2">
+                        <Phone className="w-4 h-4 mt-0.5 shrink-0 text-[#6B6A62] dark:text-[#9B9A92]" strokeWidth={1.75} />
+                        <span className="break-words min-w-0">{provider.user.phone}</span>
                       </p>
                     )}
                     {provider.address && (
-                      <p className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-[#6B6A62] dark:text-[#9B9A92]" strokeWidth={1.75} />
-                        {provider.address}
+                      <p className="flex items-start gap-2">
+                        <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-[#6B6A62] dark:text-[#9B9A92]" strokeWidth={1.75} />
+                        <span className="break-words min-w-0">{provider.address}</span>
                       </p>
                     )}
                     {!provider.user?.phone && !provider.address && (

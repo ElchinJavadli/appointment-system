@@ -280,7 +280,7 @@ export default function ClientProfilePage() {
                 icon={<CategoryIcon category={a.provider?.category} className="w-5 h-5" style={{ color: accent }} />}
               >
                 {modifiable && (
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => (isOpen ? closeReschedule() : openReschedule(a))}
                       className="text-sm px-3 py-1 rounded-lg border transition-colors"
@@ -333,7 +333,7 @@ export default function ClientProfilePage() {
                       type="date"
                       value={rDate}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => { setRDate(e.target.value); setRSelectedSlot(null); }}
-                      className="block w-full bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-3 py-2 mb-3 text-[#1C1F26] dark:text-[#FAFAF8] outline-none focus:border-[#72b0ab]/60 transition-colors text-sm"
+                      className="block w-full min-w-0 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-3 py-2 mb-3 text-[#1C1F26] dark:text-[#FAFAF8] outline-none focus:border-[#72b0ab]/60 transition-colors text-sm"
                     />
                   )}
 
@@ -392,14 +392,14 @@ export default function ClientProfilePage() {
     );
   };
 
-    return (
+  return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B]">
       <Navbar role="client" />
 
-      <div className="p-6 sm:p-8 max-w-6xl mx-auto">
+      <div className="px-4 py-6 sm:p-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
 
-          <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl overflow-hidden lg:sticky lg:top-24">
+          <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl overflow-hidden lg:sticky lg:top-24 min-w-0">
             <div className="relative h-20" style={{ backgroundColor: "#72b0ab" }}>
               <div
                 className="absolute inset-0 opacity-[0.12] pointer-events-none"
@@ -410,7 +410,7 @@ export default function ClientProfilePage() {
               />
             </div>
 
-            <div className="px-6 pb-6">
+            <div className="px-5 sm:px-6 pb-6">
               <div className="relative z-10 -mt-8 mb-3">
                 {avatarUrl ? (
                   <img
@@ -428,7 +428,7 @@ export default function ClientProfilePage() {
               <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif] break-words">
                 {name || "Your name"}
               </p>
-              <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] break-words">{email}</p>
+              <p className="text-sm text-[#6B6A62] dark:text-[#9B9A92] break-all">{email}</p>
 
               <div className="grid grid-cols-2 gap-2 mt-4">
                 <div className="bg-[#FAFAF8] dark:bg-[#14161B] rounded-xl p-3">
@@ -458,8 +458,8 @@ export default function ClientProfilePage() {
             </div>
           </div>
 
-          <div>
-            <div className="flex gap-1 bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-1.5 mb-5 w-fit">
+          <div className="min-w-0">
+            <div className="flex gap-1 bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-1.5 mb-5 w-full sm:w-fit overflow-x-auto">
               {[
                 { key: "upcoming", label: "Upcoming" },
                 { key: "past", label: "Past" },
@@ -469,7 +469,7 @@ export default function ClientProfilePage() {
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
+                  className={`flex-1 sm:flex-none whitespace-nowrap px-2 sm:px-4 py-2 text-[13px] sm:text-sm font-medium rounded-xl transition-colors ${
                     activeTab === tab.key
                       ? "bg-[#72b0ab] text-white"
                       : "text-[#6B6A62] dark:text-[#9B9A92] hover:text-[#1C1F26] dark:hover:text-[#FAFAF8]"
@@ -495,7 +495,7 @@ export default function ClientProfilePage() {
                   {favorites.map((f) => (
                     <div
                       key={f.id}
-                      className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-3 flex items-center gap-3"
+                      className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-3 flex items-center gap-3 min-w-0"
                     >
                       <Link
                         href={`/client/book?providerId=${f.service?.providerId}&serviceId=${f.serviceId}`}
@@ -534,7 +534,7 @@ export default function ClientProfilePage() {
 
             {activeTab === "settings" && (
               <div className="flex flex-col gap-5 max-w-xl">
-                <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-6">
+                <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-6">
                   <p className="text-xs font-semibold uppercase tracking-wider text-[#6B6A62] dark:text-[#9B9A92] mb-4">
                     Profile photo
                   </p>
@@ -543,15 +543,15 @@ export default function ClientProfilePage() {
                       <img
                         src={avatarUrl}
                         alt="Avatar"
-                        className="w-14 h-14 rounded-full object-cover"
+                        className="w-14 h-14 rounded-full object-cover shrink-0"
                       />
                     ) : (
-                      <span className="w-14 h-14 rounded-full bg-[#1C1F26] dark:bg-[#72b0ab] text-white flex items-center justify-center text-xl font-bold font-['Space_Grotesk',sans-serif]">
+                      <span className="w-14 h-14 rounded-full bg-[#1C1F26] dark:bg-[#72b0ab] text-white flex items-center justify-center text-xl font-bold font-['Space_Grotesk',sans-serif] shrink-0">
                         {name?.[0]?.toUpperCase() || "?"}
                       </span>
                     )}
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2 min-w-0">
                       <label className="cursor-pointer text-xs font-medium px-3 py-1.5 rounded-lg border border-[#1C1F26]/15 dark:border-white/10 text-[#1C1F26] dark:text-[#FAFAF8] hover:border-[#72b0ab]/50 hover:text-[#72b0ab] transition-colors">
                         {avatarUploading ? "Uploading..." : "Change"}
                         <input
@@ -581,7 +581,7 @@ export default function ClientProfilePage() {
 
                 <form
                   onSubmit={handleSubmit}
-                  className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-6 flex flex-col gap-4"
+                  className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-6 flex flex-col gap-4"
                 >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -616,7 +616,7 @@ export default function ClientProfilePage() {
                   />
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <button
                     type="submit"
                     className="bg-[#1C1F26] dark:bg-[#72b0ab] text-white rounded-xl px-6 py-2.5 hover:bg-[#72b0ab] dark:hover:bg-[#5a8d8a] transition-colors font-medium"
@@ -626,7 +626,7 @@ export default function ClientProfilePage() {
 
                   {message && (
                     <p
-                      className="text-sm px-3 py-2 rounded-lg"
+                      className="w-full sm:w-auto text-sm px-3 py-2 rounded-lg"
                       style={{
                         color: error ? STATUS.cancelled.color : STATUS.confirmed.color,
                         backgroundColor: error ? `${STATUS.cancelled.color}14` : `${STATUS.confirmed.color}14`,

@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search, Filter, X, Clock } from "lucide-react";
+import { Search, Filter, X, Clock, Moon, Sun } from "lucide-react";
 import { CategoryIcon } from "@/components/icons";
+import { useTheme } from "@/context/ThemeContext";
 import type { ChangeEvent, MouseEvent } from "react";
 
 const CATEGORY_COLORS: any = {
@@ -14,16 +15,27 @@ const CATEGORY_COLORS: any = {
   Nails: "#8A3B4A",
 };
 
-
-
-
 export default function App() {
+  const { theme, toggleTheme } = useTheme();
+
+  const [user, setUser] = useState<any>(null);
+  const [authLoaded, setAuthLoaded] = useState(false);
+
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
+  // Login olub-olmadığını yoxla (401 gələrsə user = null qalır)
+  useEffect(() => {
+    fetch("/api/me", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setUser(data))
+      .catch(() => setUser(null))
+      .finally(() => setAuthLoaded(true));
+  }, []);
 
   useEffect(() => {
     fetch("/api/services")
@@ -33,6 +45,18 @@ export default function App() {
         setLoading(false);
       });
   }, []);
+
+  const dashboardHref =
+    user?.role === "admin"
+      ? "/admin/dashboard"
+      : user?.role === "provider"
+      ? "/provider/dashboard"
+      : "/client/dashboard";
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+  }
 
   const categories = [
     ...new Set(services.map((s) => s.provider?.category).filter(Boolean)),
@@ -50,85 +74,119 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] font-[Inter,sans-serif] text-[#1C1F26]">
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B] font-[Inter,sans-serif] text-[#1C1F26] dark:text-[#FAFAF8] transition-colors">
 
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[#FAFAF8]/90 backdrop-blur-sm border-b border-[#1C1F26]/10">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+      <nav className="fixed top-0 inset-x-0 z-50 bg-[#FAFAF8]/90 dark:bg-[#14161B]/90 backdrop-blur-sm border-b border-[#1C1F26]/10 dark:border-white/10 transition-colors">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-[#72b0ab] flex items-center justify-center text-white text-sm font-bold font-['Space_Grotesk',sans-serif]">A</div>
-            <span className="font-semibold text-lg tracking-tight font-['Space_Grotesk',sans-serif]">Appointment</span>
+            <span className="hidden sm:inline font-semibold text-lg tracking-tight font-['Space_Grotesk',sans-serif]">Appointment</span>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-[#1C1F26]/70 hover:text-[#1C1F26] text-sm font-medium transition-colors px-4 py-2 rounded-lg hover:bg-[#1C1F26]/5"
+
+          <div className="flex items-center gap-1.5 sm:gap-3 min-h-[40px]">
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-2 flex items-center justify-center bg-[#1C1F26]/5 dark:bg-white/10 hover:bg-[#1C1F26]/10 dark:hover:bg-white/20 rounded-lg transition-colors font-['IBM_Plex_Mono',monospace] text-xs"
+              title="Toggle dark mode"
+              aria-label="Toggle dark mode"
             >
-              Log in
-            </Link>
-            <Link
-              href="/register"
-              className="bg-[#1C1F26] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[#72b0ab] transition-colors duration-200"
-            >
-              Get started
-            </Link>
+              {theme === "light" ? <Moon className="w-4 h-4 sm:hidden" /> : <Sun className="w-4 h-4 sm:hidden" />}
+              <span className="hidden sm:inline">{theme === "light" ? "Dark" : "Light"}</span>
+            </button>
+
+            {authLoaded &&
+              (user ? (
+                <>
+                  <span className="hidden md:inline text-sm text-[#6B6A62] dark:text-[#9B9A92] max-w-[140px] truncate">
+                    {user.name}
+                  </span>
+                  <Link
+                    href={dashboardHref}
+                    className="bg-[#1C1F26] dark:bg-[#FAFAF8] text-white dark:text-[#1C1F26] text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-lg hover:bg-[#72b0ab] dark:hover:bg-[#72b0ab] dark:hover:text-white transition-colors duration-200"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[#1C1F26]/70 dark:text-[#FAFAF8]/70 hover:text-[#1C1F26] dark:hover:text-[#FAFAF8] text-sm font-medium transition-colors px-3 sm:px-4 py-2 rounded-lg hover:bg-[#1C1F26]/5 dark:hover:bg-white/5"
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-[#1C1F26]/70 dark:text-[#FAFAF8]/70 hover:text-[#1C1F26] dark:hover:text-[#FAFAF8] text-sm font-medium transition-colors px-3 sm:px-4 py-2 rounded-lg hover:bg-[#1C1F26]/5 dark:hover:bg-white/5"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="bg-[#1C1F26] dark:bg-[#FAFAF8] text-white dark:text-[#1C1F26] text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-lg hover:bg-[#72b0ab] dark:hover:bg-[#72b0ab] dark:hover:text-white transition-colors duration-200 whitespace-nowrap"
+                  >
+                    Get started
+                  </Link>
+                </>
+              ))}
           </div>
         </div>
       </nav>
 
-      <section className="pt-32 pb-20 px-6 text-center relative overflow-hidden">
+      <section className="pt-28 sm:pt-32 pb-14 sm:pb-20 px-4 sm:px-6 text-center relative overflow-hidden">
 
         <div
-          className="absolute inset-0 opacity-[0.4] pointer-events-none"
+          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15] pointer-events-none text-[#1C1F26] dark:text-white"
           style={{
-            backgroundImage: "radial-gradient(#1C1F26 0.6px, transparent 0.6px)",
+            backgroundImage: "radial-gradient(currentColor 0.6px, transparent 0.6px)",
             backgroundSize: "22px 22px",
             maskImage: "radial-gradient(ellipse 60% 50% at 50% 20%, black, transparent)",
           }}
         />
 
         <div className="relative max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 text-[#12665C] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border border-[#12665C]/30 mb-5">
+          <span className="inline-flex items-center gap-1.5 text-[#12665C] dark:text-[#7FB5A8] text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border border-[#12665C]/30 mb-5">
             Online Booking
           </span>
-          <h1 className="text-5xl font-bold leading-tight mb-4 font-['Space_Grotesk',sans-serif] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 font-['Space_Grotesk',sans-serif] tracking-tight">
             Book your next<br />
             <span className="text-[#72b0ab]">appointment</span> instantly
           </h1>
-          <p className="text-[#6B6A62] text-lg mb-10 leading-relaxed">
+          <p className="text-[#6B6A62] dark:text-[#9B9A92] text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed">
             Discover top-rated professionals near you. Compare services, check availability, and book in seconds.
           </p>
 
-          <div className="bg-white rounded-2xl shadow-sm p-2 flex gap-2 max-w-xl mx-auto border border-[#1C1F26]/10">
-            <div className="flex-1 flex items-center gap-3 px-4">
-              <Search className="w-4 h-4 text-[#6B6A62] shrink-0" strokeWidth={2} />
+          <div className="bg-white dark:bg-[#20242C] rounded-2xl shadow-sm p-2 flex gap-2 max-w-xl mx-auto border border-[#1C1F26]/10 dark:border-white/10">
+            <div className="flex-1 min-w-0 flex items-center gap-3 px-3 sm:px-4">
+              <Search className="w-4 h-4 text-[#6B6A62] dark:text-[#9B9A92] shrink-0" strokeWidth={2} />
               <input
                 type="text"
                 placeholder="Search services or providers..."
                 value={search}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-                className="flex-1 text-sm bg-transparent outline-none placeholder-[#6B6A62]/70"
+                className="flex-1 min-w-0 text-sm bg-transparent outline-none placeholder-[#6B6A62]/70 dark:placeholder-[#9B9A92]/70"
               />
             </div>
-            <button className="bg-[#72b0ab] text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-[#5a8d8a] transition-colors duration-200">
+            <button className="bg-[#72b0ab] text-white text-sm font-semibold px-4 sm:px-6 py-3 rounded-xl hover:bg-[#5a8d8a] transition-colors duration-200">
               Search
             </button>
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 mb-8">
-        <div className="bg-white rounded-2xl border border-[#1C1F26]/10 p-4 flex flex-wrap gap-3 items-center">
-          <div className="flex items-center gap-2 text-[#6B6A62]">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 mb-8">
+        <div className="bg-white dark:bg-[#20242C] rounded-2xl border border-[#1C1F26]/10 dark:border-white/10 p-4 flex flex-wrap gap-3 items-center">
+          <div className="flex items-center gap-2 text-[#6B6A62] dark:text-[#9B9A92]">
             <Filter className="w-4 h-4" strokeWidth={2} />
             <span className="text-xs font-semibold uppercase tracking-wider">Filter</span>
           </div>
 
-          <div className="w-px h-5 bg-[#1C1F26]/10" />
+          <div className="hidden sm:block w-px h-5 bg-[#1C1F26]/10 dark:bg-white/10" />
 
           <select
             value={category}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value)}
-            className="text-sm bg-[#FAFAF8] border border-[#1C1F26]/15 rounded-xl px-4 py-2.5 outline-none cursor-pointer hover:border-[#72b0ab]/50 transition-colors focus:border-[#72b0ab] focus:ring-2 focus:ring-[#72b0ab]/10"
+            className="w-full sm:w-auto text-sm bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 outline-none cursor-pointer hover:border-[#72b0ab]/50 transition-colors focus:border-[#72b0ab] focus:ring-2 focus:ring-[#72b0ab]/10"
           >
             <option value="">All categories</option>
             {categories.map((c) => (
@@ -136,25 +194,25 @@ export default function App() {
             ))}
           </select>
 
-          <div className="flex items-center gap-2 bg-[#FAFAF8] border border-[#1C1F26]/15 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 transition-colors focus-within:border-[#72b0ab] focus-within:ring-2 focus-within:ring-[#72b0ab]/10">
-            <span className="text-[#6B6A62] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
+          <div className="flex-1 sm:flex-none flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 transition-colors focus-within:border-[#72b0ab] focus-within:ring-2 focus-within:ring-[#72b0ab]/10">
+            <span className="text-[#6B6A62] dark:text-[#9B9A92] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
             <input
               type="number"
               placeholder="Min"
               value={minPrice}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setMinPrice(e.target.value)}
-              className="w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 font-['IBM_Plex_Mono',monospace]"
+              className="w-full min-w-0 sm:w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-[#FAFAF8] border border-[#1C1F26]/15 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 transition-colors focus-within:border-[#72b0ab] focus-within:ring-2 focus-within:ring-[#72b0ab]/10">
-            <span className="text-[#6B6A62] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
+          <div className="flex-1 sm:flex-none flex items-center gap-2 bg-[#FAFAF8] dark:bg-[#14161B] border border-[#1C1F26]/15 dark:border-white/10 rounded-xl px-4 py-2.5 hover:border-[#72b0ab]/50 transition-colors focus-within:border-[#72b0ab] focus-within:ring-2 focus-within:ring-[#72b0ab]/10">
+            <span className="text-[#6B6A62] dark:text-[#9B9A92] text-sm font-['IBM_Plex_Mono',monospace]">$</span>
             <input
               type="number"
               placeholder="Max"
               value={maxPrice}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxPrice(e.target.value)}
-              className="w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 font-['IBM_Plex_Mono',monospace]"
+              className="w-full min-w-0 sm:w-16 text-sm bg-transparent outline-none placeholder-[#6B6A62]/60 dark:placeholder-[#9B9A92]/60 font-['IBM_Plex_Mono',monospace]"
             />
           </div>
 
@@ -170,10 +228,10 @@ export default function App() {
         </div>
       </section>
 
-      <main className="max-w-[1600px] mx-auto px-6 pb-20">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 pb-20">
         <div className="flex items-center justify-between mb-5">
-          <p className="text-[#6B6A62] text-sm">
-            <span className="font-semibold text-[#1C1F26] font-['IBM_Plex_Mono',monospace]">{filtered.length}</span> services available
+          <p className="text-[#6B6A62] dark:text-[#9B9A92] text-sm">
+            <span className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] font-['IBM_Plex_Mono',monospace]">{filtered.length}</span> services available
           </p>
         </div>
 
@@ -185,9 +243,9 @@ export default function App() {
 
         {!loading && filtered.length === 0 && (
           <div className="text-center py-24">
-            <Search className="w-10 h-10 mx-auto mb-4 text-[#1C1F26]/20" strokeWidth={2} />
+            <Search className="w-10 h-10 mx-auto mb-4 text-[#1C1F26]/20 dark:text-white/20" strokeWidth={2} />
             <h3 className="font-semibold text-lg mb-1 font-['Space_Grotesk',sans-serif]">No services found</h3>
-            <p className="text-[#6B6A62] text-sm">Try adjusting your filters or search term.</p>
+            <p className="text-[#6B6A62] dark:text-[#9B9A92] text-sm">Try adjusting your filters or search term.</p>
           </div>
         )}
 
@@ -201,14 +259,14 @@ export default function App() {
               <Link
                 key={s.id}
                 href={`/client/book?providerId=${s.providerId}&serviceId=${s.id}`}
-                className="group bg-white rounded-2xl border border-[#1C1F26]/10 overflow-hidden hover:shadow-lg hover:shadow-[#1C1F26]/5 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                className="group bg-white dark:bg-[#20242C] rounded-2xl border border-[#1C1F26]/10 dark:border-white/10 overflow-hidden hover:shadow-lg hover:shadow-[#1C1F26]/5 hover:-translate-y-1 transition-all duration-300 flex flex-col min-w-0"
               >
 
                 {s.images && s.images.length > 0 ? (
                   <img
                     src={s.images[0].url}
                     alt={s.name}
-                    className="w-full h-60 object-cover"
+                    className="w-full h-52 sm:h-60 object-cover"
                   />
                 ) : (
                   <div className="w-full h-44 flex items-center justify-center" style={{ backgroundColor: `${color}14` }}>
@@ -216,7 +274,7 @@ export default function App() {
                   </div>
                 )}
 
-                <div className="p-5 flex flex-col flex-1">
+                <div className="p-5 flex flex-col flex-1 min-w-0">
 
                   <span
                     className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit"
@@ -226,24 +284,24 @@ export default function App() {
                     {cat}
                   </span>
 
-                  <p className="font-semibold text-[#1C1F26] text-base mb-1 group-hover:text-[#72b0ab] transition-colors leading-snug font-['Space_Grotesk',sans-serif]">
+                  <p className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8] text-base mb-1 group-hover:text-[#72b0ab] dark:group-hover:text-[#72b0ab] transition-colors leading-snug font-['Space_Grotesk',sans-serif] break-words">
                     {s.name}
                   </p>
 
-                  <div className="flex items-center gap-3 text-sm text-[#6B6A62] mb-4 font-['IBM_Plex_Mono',monospace]">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[#6B6A62] dark:text-[#9B9A92] mb-4 font-['IBM_Plex_Mono',monospace]">
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-[#6B6A62]" strokeWidth={2} />
+                      <Clock className="w-3.5 h-3.5" strokeWidth={2} />
                       {s.duration} min
                     </span>
-                    <span className="w-1 h-1 rounded-full bg-[#1C1F26]/20" />
-                    <span className="font-semibold text-[#1C1F26]">${s.price}</span>
+                    <span className="w-1 h-1 rounded-full bg-[#1C1F26]/20 dark:bg-white/20" />
+                    <span className="font-semibold text-[#1C1F26] dark:text-[#FAFAF8]">${s.price}</span>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between">
+                  <div className="mt-auto flex items-center justify-between gap-3">
                     <Link
                       href={`/client/providers/${s.providerId}`}
                       onClick={(e: MouseEvent) => e.stopPropagation()}
-                      className="flex items-center gap-2 text-sm text-[#6B6A62] hover:text-[#72b0ab] transition-colors"
+                      className="flex items-center gap-2 min-w-0 text-sm text-[#6B6A62] dark:text-[#9B9A92] hover:text-[#72b0ab] dark:hover:text-[#72b0ab] transition-colors"
                     >
                       <div
                         className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
@@ -251,10 +309,10 @@ export default function App() {
                       >
                         {initials}
                       </div>
-                      <span>{s.provider?.user?.name || "Unknown"}</span>
+                      <span className="truncate">{s.provider?.user?.name || "Unknown"}</span>
                     </Link>
 
-                    <span className="text-xs font-semibold text-[#72b0ab] bg-[#72b0ab]/10 group-hover:bg-[#72b0ab] group-hover:text-white px-3 py-1.5 rounded-xl transition-all duration-200">
+                    <span className="shrink-0 text-xs font-semibold text-[#72b0ab] bg-[#72b0ab]/10 group-hover:bg-[#72b0ab] group-hover:text-white px-3 py-1.5 rounded-xl transition-all duration-200">
                       Book now
                     </span>
                   </div>
@@ -265,7 +323,7 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="border-t border-[#1C1F26]/10 py-8 text-center text-[#6B6A62] text-sm">
+      <footer className="border-t border-[#1C1F26]/10 dark:border-white/10 py-8 px-4 text-center text-[#6B6A62] dark:text-[#9B9A92] text-sm">
         © {new Date().getFullYear()} Final Project · Appointment System
       </footer>
     </div>

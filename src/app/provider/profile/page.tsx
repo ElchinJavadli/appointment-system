@@ -106,13 +106,13 @@ export default function ProviderProfilePage() {
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#14161B]">
       <Navbar role="provider" />
 
-      <div className="p-6 sm:p-8 lg:p-10 max-w-4xl mx-auto">
+      <div className="px-4 py-6 sm:p-8 lg:p-10 max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6 text-[#1C1F26] dark:text-[#FAFAF8] font-['Space_Grotesk',sans-serif]">
           My Profile
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 items-start">
-          <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-6 lg:sticky lg:top-24">
+          <div className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-5 sm:p-6 lg:sticky lg:top-24 min-w-0">
             <label className="relative inline-block cursor-pointer mb-4 group">
               {avatarUrl ? (
                 <img
@@ -177,7 +177,7 @@ export default function ProviderProfilePage() {
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-6 flex flex-col gap-4"
+            className="bg-white dark:bg-[#20242C] border border-[#1C1F26]/10 dark:border-white/10 rounded-2xl p-4 sm:p-6 flex flex-col gap-4 min-w-0"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -256,7 +256,7 @@ export default function ProviderProfilePage() {
               />
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <button
                 type="submit"
                 className="bg-[#1C1F26] dark:bg-[#72b0ab] text-white rounded-xl px-6 py-2.5 hover:bg-[#72b0ab] dark:hover:bg-[#5a8d8a] transition-colors font-medium"
@@ -266,7 +266,7 @@ export default function ProviderProfilePage() {
 
               {message && (
                 <p
-                  className="text-sm px-3 py-2 rounded-lg"
+                  className="w-full sm:w-auto text-sm px-3 py-2 rounded-lg"
                   style={{
                     color: error ? STATUS.cancelled.color : STATUS.confirmed.color,
                     backgroundColor: error ? `${STATUS.cancelled.color}14` : `${STATUS.confirmed.color}14`,
